@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>코칭비 수령 정보 제출</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* 색감은 아래 변수만 바꾸면 전체에 반영됩니다 (디자인 구조는 희망코치진 설문과 동일) */
+  :root{
+    --navy:#0B3D3A;        /* 메인(진한 딥틸) */
+    --blue:#0C8A74;        /* 포인트(틸 그린) */
+    --blue-tint:#E3F6F1;
+    --orange:#F4A62A;      /* 서브(앰버) */
+    --orange-tint:#FFF4DC;
+    --pink:#F2624F;        /* 필수표시·강조(코랄) */
+    --pink-tint:#FEECE8;
+    --paper:#F4F8F7;
+    --white:#FFFFFF;
+    --ink:#1F2A29;
+    --slate:#62726F;
+    --line:#E1ECE9;
+    --danger:#D9453B;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html{background:var(--navy);}
+  body{margin:0;font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Malgun Gothic',sans-serif;background:var(--navy);color:var(--ink);line-height:1.65;}
+  .wrap{max-width:720px;margin:0 auto;padding:0 16px 60px;}
+
+  .band{position:relative;height:74px;overflow:hidden;}
+  .band .star{position:absolute;color:#fff;opacity:.85;}
+  .band .star.s1{top:14px;left:12%;font-size:16px;}
+  .band .star.s2{top:36px;left:26%;font-size:10px;}
+  .band .star.s3{top:10px;right:16%;font-size:13px;}
+  .band .star.s4{top:40px;right:8%;font-size:18px;}
+  .band .dot{position:absolute;border-radius:50%;background:rgba(255,255,255,.35);}
+  .band .dot.d1{width:8px;height:8px;top:22px;left:44%;}
+  .band .dot.d2{width:5px;height:5px;top:48px;right:32%;}
+
+  .sheet{background:var(--white);border-radius:22px;margin-top:-26px;box-shadow:0 18px 40px rgba(5,35,32,.35);}
+  .sheet-inner{padding:32px 30px 28px;}
+  @media (max-width:520px){.sheet-inner{padding:26px 20px 24px;}}
+
+  .hero{padding:6px 0 24px;text-align:center;}
+  .eyebrow{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.03em;color:#fff;background:var(--orange);padding:6px 14px;border-radius:999px;margin-bottom:16px;}
+  .hero h1{font-size:26px;font-weight:800;color:var(--navy);margin:0 0 14px;letter-spacing:-.01em;line-height:1.45;word-break:keep-all;}
+  .hero h1 .accent{color:var(--blue);}
+  @media (max-width:420px){.hero h1{font-size:21px;line-height:1.4;}}
+  .hero-dots{display:flex;justify-content:center;gap:7px;}
+  .hero-dots span{width:7px;height:7px;border-radius:50%;}
+  .hero-dots span:nth-child(1){background:var(--blue);}
+  .hero-dots span:nth-child(2){background:var(--orange);}
+  .hero-dots span:nth-child(3){background:var(--pink);}
+
+  .intro-block{padding:20px 0 4px;margin-bottom:6px;}
+  .intro-block p{font-size:14.5px;margin:0 0 13px;word-break:keep-all;}
+  .intro-block strong{color:var(--navy);font-weight:700;}
+  .notice{display:flex;align-items:flex-start;gap:10px;background:var(--orange-tint);border-radius:12px;padding:12px 16px;font-size:14px;font-weight:700;color:var(--navy);margin:18px 0;word-break:keep-all;}
+  .notice-icon{width:22px;height:22px;border-radius:50%;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;margin-top:1px;}
+  .meta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px;}
+  .meta-item{flex:1 1 200px;display:flex;align-items:center;gap:11px;padding:13px 14px;background:var(--blue-tint);border-radius:12px;}
+  .meta-icon{width:32px;height:32px;border-radius:50%;background:#fff;color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+  .meta-label{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--slate);display:block;margin-bottom:2px;}
+  .meta-value{font-size:13.5px;font-weight:700;color:var(--navy);}
+
+  .section-title{display:flex;align-items:center;gap:11px;margin:30px 0 16px;padding:12px 16px;border-radius:12px;background:var(--navy);}
+  .section-title.alt{background:var(--blue);}
+  .section-badge{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.22);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;}
+  .section-title h2{font-size:15.5px;font-weight:700;color:#fff;margin:0;}
+
+  .card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;margin-bottom:12px;box-shadow:0 2px 10px rgba(11,61,58,.05);}
+  .q-label{font-size:14.5px;font-weight:700;margin-bottom:4px;display:flex;gap:6px;}
+  .req{color:var(--pink);font-weight:700;}
+  .q-desc{font-size:12.5px;color:var(--slate);margin:0 0 12px;word-break:keep-all;}
+  input[type=text],input[type=tel],input[type=email],select{width:100%;font-family:inherit;font-size:14.5px;color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:11px 13px;outline:none;transition:border-color .15s,background .15s;}
+  input[type=text]:focus,input[type=tel]:focus,input[type=email]:focus,select:focus{border-color:var(--blue);background:#fff;}
+  select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:36px;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2362726F' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
+    background-repeat:no-repeat;background-position:right 13px center;}
+  .stack{display:flex;flex-direction:column;gap:8px;}
+
+  .radio-item{display:flex;align-items:center;gap:11px;border:1.5px solid var(--line);border-radius:10px;padding:11px 13px;cursor:pointer;font-size:14px;transition:border-color .15s,background .15s;background:#fff;}
+  .radio-item:hover{border-color:#9FD6CA;}
+  .radio-item:has(input:checked){border-color:var(--blue);background:var(--blue-tint);}
+  .radio-item input{position:absolute;opacity:0;width:0;height:0;}
+  .check-icon{width:21px;height:21px;border-radius:50%;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:transparent;flex-shrink:0;background:#fff;transition:background .15s,border-color .15s;}
+  .check-icon::after{content:"✓";}
+  .radio-item:has(input:checked) .check-icon{background:var(--blue);border-color:var(--blue);color:#fff;}
+  .radio-item b{display:block;font-size:14.5px;color:var(--navy);}
+  .radio-item small{display:block;font-size:12.5px;color:var(--slate);}
+  #donateBox{display:none;margin-top:16px;padding-top:16px;border-top:1px dashed var(--line);}
+
+  .file{border:1.5px dashed #A9D8CE;border-radius:12px;padding:14px;background:var(--paper);}
+  .file input{font-size:13.5px;width:100%;}
+  .file .fn{font-size:12.5px;color:var(--blue);font-weight:600;margin-top:6px;word-break:break-all;}
+
+  .consent{border:1px solid var(--line);border-radius:12px;background:var(--paper);padding:14px 16px;font-size:12.5px;line-height:1.65;max-height:230px;overflow:auto;}
+  .consent ol{margin:6px 0 0;padding-left:18px;} .consent li{margin-bottom:6px;}
+  .consent-row{margin-top:12px;}
+
+  .submit-wrap{margin-top:30px;padding-top:6px;}
+  .submit-btn{width:100%;background:var(--blue);color:#fff;border:none;border-radius:14px;padding:16px;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 8px 20px rgba(12,138,116,.32);transition:background .15s,transform .1s;}
+  .submit-btn:hover{background:#0A6F5D;}
+  .submit-btn:active{transform:scale(.99);}
+  .submit-btn:disabled{background:#8BA6A1;box-shadow:none;cursor:not-allowed;}
+  .submit-fail{display:none;background:var(--pink-tint);color:var(--danger);font-weight:700;font-size:13.5px;border-radius:12px;padding:12px 16px;margin-bottom:14px;text-align:center;}
+  .submit-fail.show{display:block;}
+  .submit-note{font-size:12px;color:var(--slate);text-align:center;margin-top:10px;}
+
+  .page-footer{margin-top:24px;display:flex;justify-content:center;}
+  .footer-logo{height:32px;width:auto;display:block;filter:brightness(0) invert(1);}
+
+  .success-screen{display:none;max-width:560px;margin:80px auto;text-align:center;padding:0 20px;}
+  .success-icon{width:60px;height:60px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 22px;font-weight:800;box-shadow:0 8px 20px rgba(12,138,116,.45);}
+  .success-screen h2{font-size:19px;color:#fff;margin:0 0 10px;}
+  .success-screen p{font-size:14px;color:rgba(255,255,255,.78);word-break:keep-all;}
+</style>
+</head>
+<body>
+<div class="wrap" id="main">
+  <div class="band">
+    <span class="star s1">✦</span><span class="star s2">✦</span><span class="star s3">✦</span><span class="star s4">✦</span>
+    <span class="dot d1"></span><span class="dot d2"></span>
+  </div>
+
+  <div class="sheet"><div class="sheet-inner">
+    <div class="hero">
+      <span class="eyebrow">서울대 × 삼성 현직자 1:1 커리어코칭</span>
+      <h1>코칭비 <span class="accent">수령 정보</span> 제출</h1>
+      <div class="hero-dots"><span></span><span></span><span></span></div>
+    </div>
+
+    <div class="intro-block">
+      <p>먼저 양질의 코칭 과정 제공해주셔서 진심으로 감사드립니다. 코치님의 전문성 덕분에 금번 프로그램이 더욱 의미 있고 뜻깊은 과정이 될 수 있었습니다.</p>
+      <p><strong>코칭비 지급 및 소득 신고</strong>를 위해 아래 정보를 제출해 주시면 감사하겠습니다.</p>
+      <div class="notice"><span class="notice-icon">!</span><span>제출 내용은 별도 저장 없이 담당자 메일로만 전달되며, 코칭비 지급 및 소득 신고 목적으로만 사용됩니다.</span></div>
+      <div class="meta-row">
+        <div class="meta-item"><div class="meta-icon">✎</div><div><span class="meta-label">소요 시간</span><span class="meta-value">약 3분</span></div></div>
+        <div class="meta-item"><div class="meta-icon">▤</div><div><span class="meta-label">준비물</span><span class="meta-value">개인 수령·개인 기부 시 통장사본, 신분증 사본</span></div></div>
+      </div>
+    </div>
+
+    <form id="form" novalidate>
+      <div class="section-title"><span class="section-badge">1</span><h2>기본 정보</h2></div>
+      <div class="card">
+        <div class="q-label">이름<span class="req">*</span></div>
+        <select id="name"><option value="">불러오는 중…</option></select>
+      </div>
+      <div class="card">
+        <div class="q-label">연락처<span class="req">*</span></div>
+        <p class="q-desc">이름을 선택하면 저희가 가지고 있는 정보가 자동으로 표시됩니다. 다르면 직접 수정해 주세요.</p>
+        <input type="tel" id="phone" placeholder="010-0000-0000" autocomplete="off">
+      </div>
+      <div class="card">
+        <div class="q-label">이메일<span class="req">*</span></div>
+        <input type="email" id="email" placeholder="example@email.com" autocomplete="off">
+      </div>
+      <div class="card">
+        <div class="q-label">주소지<span class="req">*</span></div>
+        <div class="stack">
+          <input type="text" id="address" placeholder="도로명 주소 (예: 서울특별시 관악구 관악로 1)" autocomplete="off">
+          <input type="text" id="addressDetail" placeholder="상세 주소 (동·호수 등)" autocomplete="off">
+        </div>
+      </div>
+
+      <div class="section-title alt"><span class="section-badge">2</span><h2>코칭비 수령방식</h2></div>
+      <div class="card">
+        <div class="q-label">수령방식<span class="req">*</span></div>
+        <div class="stack" style="margin-top:8px">
+          <label class="radio-item"><input type="radio" name="pay" value="전액 기부"><span class="check-icon"></span><div><b>전액 기부</b><small>코칭비 전액을 기부합니다.</small></div></label>
+          <label class="radio-item"><input type="radio" name="pay" value="전액 개인 수령"><span class="check-icon"></span><div><b>전액 개인 수령</b><small>코칭비 전액을 개인 계좌로 수령합니다.</small></div></label>
+        </div>
+        <div id="donateBox">
+          <div class="q-label">기부 방식<span class="req">*</span></div>
+          <div class="stack" style="margin-top:8px">
+            <label class="radio-item"><input type="radio" name="donate" value="클립스컨설팅을 통한 익명 기부 (세이브더칠드런)"><span class="check-icon"></span><div><b>클립스컨설팅을 통한 익명 기부</b><small>세이브더칠드런으로 기부됩니다.</small></div></label>
+            <label class="radio-item"><input type="radio" name="donate" value="코칭비 수령 후 개인적으로 기부"><span class="check-icon"></span><div><b>코칭비 수령 후 개인적으로 기부</b><small>코칭비를 수령하신 뒤 직접 기부합니다.</small></div></label>
+          </div>
+        </div>
+      </div>
+
+      <div id="docsBox" style="display:none">
+      <div class="section-title"><span class="section-badge">3</span><h2>서류 제출</h2></div>
+      <div class="card">
+        <div class="q-label">통장사본<span class="req">*</span></div>
+        <p class="q-desc">JPG, PNG, PDF · 6MB 이하 (사진은 자동으로 용량이 줄어듭니다)</p>
+        <div class="file"><input type="file" id="bankbook" accept="image/jpeg,image/png,application/pdf"><div class="fn" id="fn1"></div></div>
+      </div>
+      <div class="card">
+        <div class="q-label">신분증 사본 (주민등록증)<span class="req">*</span></div>
+        <p class="q-desc">JPG, PNG, PDF · 6MB 이하</p>
+        <div class="file"><input type="file" id="idcard" accept="image/jpeg,image/png,application/pdf"><div class="fn" id="fn2"></div></div>
+      </div>
+
+      <div class="section-title alt"><span class="section-badge">4</span><h2>개인정보 수집 및 이용 동의</h2></div>
+      <div class="card">
+        <div class="consent">
+          <b>개인정보 수집·이용 동의서</b>
+          <ol>
+            <li><b>수집·이용 목적</b>: 코칭비 지급 및 소득 신고 (이 목적 외에는 사용하지 않습니다)</li>
+            <li><b>수집 항목</b>: 성명, 연락처, 이메일, 주소지, 통장사본, 신분증 사본(주민등록번호 포함)</li>
+            <li><b>보유·이용 기간</b>: 코칭비 지급 및 소득 신고 완료 시까지이며, 목적 달성 후 지체 없이 파기합니다. (관계 법령에 따라 보관이 필요한 경우 해당 기간)</li>
+            <li><b>제출 방식</b>: 제출 내용은 별도 데이터베이스나 시트에 저장하지 않고, 담당자(㈜클립스컨설팅) 메일로만 전송됩니다.</li>
+            <li><b>동의 거부 권리</b>: 동의를 거부할 수 있으나, 거부하시는 경우 코칭비 지급 및 소득 신고가 불가능합니다.</li>
+          </ol>
+        </div>
+        <label class="radio-item consent-row"><input type="checkbox" id="consent"><span class="check-icon"></span><b>개인정보 수집 및 이용에 동의합니다. (필수)</b></label>
+      </div>
+
+      </div><!-- /docsBox -->
+
+      <div class="submit-wrap">
+        <div class="submit-fail" id="msg"></div>
+        <button class="submit-btn" id="btn" type="submit">제출하기</button>
+        <div class="submit-note">제출 후에도 수정이 필요하면 다시 제출해 주세요.</div>
+      </div>
+    </form>
+  </div></div>
+
+  <div class="page-footer"><img src="logo.png" alt="클립스컨설팅" class="footer-logo"></div>
+</div>
+
+<div class="success-screen" id="done">
+  <div class="success-icon">✓</div>
+  <h2>제출이 완료되었습니다</h2>
+  <p>소중한 시간 내어 코칭에 참여해 주셔서 감사합니다.<br>수정이 필요하면 페이지를 새로고침해 다시 제출해 주세요.</p>
+</div>
+
+<script>
+// Apps Script 웹 앱 URL (README 참고)
+const API_URL = "https://script.google.com/macros/s/AKfycbyUL0Jmyp8H0cCZqdB4ppkQlNHLDgF_00ntLnKNf1bUXZc7ors1Fg88RevbdTiS3gVW/exec";
+const $ = id => document.getElementById(id);
+const MAX_BYTES = 6 * 1024 * 1024;
+
+async function api(params){
+  const res = await fetch(API_URL + '?' + new URLSearchParams(params), {cache:'no-store'});
+  return res.json();
+}
+
+async function loadNames(){
+  try{
+    const r = await api({action:'roster'});
+    $('name').innerHTML = '<option value="">이름을 선택해 주세요</option>' + r.names.map(n => `<option>${n}</option>`).join('');
+  }catch(e){
+    $('name').innerHTML = '<option value="">불러오기 실패 - 새로고침해 주세요</option>';
+  }
+}
+
+$('name').addEventListener('change', async () => {
+  const n = $('name').value;
+  $('phone').value = ''; $('email').value = '';
+  if(!n) return;
+  $('phone').placeholder = '불러오는 중…';
+  try{
+    const r = await api({action:'coach', name:n});
+    if(r.phone) $('phone').value = r.phone;
+    if(r.email) $('email').value = r.email;
+  }catch(e){}
+  $('phone').placeholder = '010-0000-0000';
+});
+
+const PERSONAL_DONATE = '코칭비 수령 후 개인적으로 기부';
+
+// 서류·동의는 '전액 개인 수령' 또는 '수령 후 개인적으로 기부'일 때만 필요
+function needDocs(){
+  const pay = document.querySelector('input[name=pay]:checked');
+  const donate = document.querySelector('input[name=donate]:checked');
+  if(!pay) return false;
+  if(pay.value === '전액 개인 수령') return true;
+  return !!donate && donate.value === PERSONAL_DONATE;
+}
+function refresh(){
+  const pay = document.querySelector('input[name=pay]:checked');
+  $('donateBox').style.display = (pay && pay.value === '전액 기부') ? 'block' : 'none';
+  $('docsBox').style.display = needDocs() ? 'block' : 'none';
+}
+document.querySelectorAll('input[name=pay],input[name=donate]').forEach(r => r.addEventListener('change', refresh));
+
+['bankbook','idcard'].forEach((id,i) => $(id).addEventListener('change', () => {
+  const f = $(id).files[0]; $('fn'+(i+1)).textContent = f ? '선택됨: ' + f.name : '';
+}));
+
+function readB64(blob){
+  return new Promise((res, rej) => {
+    const fr = new FileReader();
+    fr.onload = () => res(String(fr.result).split(',')[1]);
+    fr.onerror = rej; fr.readAsDataURL(blob);
+  });
+}
+
+// 이미지는 긴 변 1800px, JPEG로 줄여 전송
+function shrinkImage(file){
+  return new Promise((res, rej) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
+      const s = Math.min(1, 1800 / Math.max(img.width, img.height));
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+      const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0,0,c.width,c.height); g.drawImage(img,0,0,c.width,c.height);
+      c.toBlob(b => { URL.revokeObjectURL(url); b ? res(b) : rej(new Error('이미지 처리 실패')); }, 'image/jpeg', 0.85);
+    };
+    img.onerror = () => rej(new Error('이미지를 읽을 수 없습니다.'));
+    img.src = url;
+  });
+}
+
+async function fileToPayload(file, label){
+  if(!file) throw new Error(label + '을(를) 첨부해 주세요.');
+  if(file.type === 'application/pdf'){
+    if(file.size > MAX_BYTES) throw new Error(label + ' PDF가 6MB를 넘습니다.');
+    return {type:file.type, data: await readB64(file)};
+  }
+  if(file.type === 'image/jpeg' || file.type === 'image/png'){
+    const b = await shrinkImage(file);
+    if(b.size > MAX_BYTES) throw new Error(label + ' 용량이 너무 큽니다.');
+    return {type:'image/jpeg', data: await readB64(b)};
+  }
+  throw new Error(label + '은(는) JPG, PNG, PDF만 가능합니다.');
+}
+
+function fail(t){ const m = $('msg'); m.textContent = t; m.classList.add('show'); }
+
+$('form').addEventListener('submit', async ev => {
+  ev.preventDefault();
+  $('msg').classList.remove('show');
+  const v = id => $(id).value.trim();
+  const pay = document.querySelector('input[name=pay]:checked');
+  const donate = document.querySelector('input[name=donate]:checked');
+  if(!v('name')) return fail('이름을 선택해 주세요.');
+  if(!v('phone')) return fail('연락처를 입력해 주세요.');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v('email'))) return fail('이메일을 올바르게 입력해 주세요.');
+  if(!v('address')) return fail('주소지를 입력해 주세요.');
+  if(!pay) return fail('수령방식을 선택해 주세요.');
+  if(pay.value === '전액 기부' && !donate) return fail('기부 방식을 선택해 주세요.');
+  const docs = needDocs();
+  if(docs){
+    if(!$('bankbook').files[0]) return fail('통장사본을 첨부해 주세요.');
+    if(!$('idcard').files[0]) return fail('신분증 사본을 첨부해 주세요.');
+    if(!$('consent').checked) return fail('개인정보 수집 및 이용에 동의해 주세요.');
+  }
+
+  const btn = $('btn'); btn.disabled = true; btn.textContent = '제출 중…';
+  try{
+    const payload = {
+      name:v('name'), phone:v('phone'), email:v('email'), address:v('address'), addressDetail:v('addressDetail'),
+      payMethod:pay.value, donateType: pay.value === '전액 기부' ? donate.value : '',
+      consent: docs
+    };
+    if(docs){
+      payload.bankbook = await fileToPayload($('bankbook').files[0], '통장사본');
+      payload.idcard = await fileToPayload($('idcard').files[0], '신분증 사본');
+    }
+    const res = await fetch(API_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload)});
+    const r = await res.json();
+    if(!r.ok) throw new Error(r.message || '제출에 실패했습니다.');
+    $('main').style.display = 'none'; $('done').style.display = 'block'; window.scrollTo(0,0);
+  }catch(e){
+    fail(e.message || '제출 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+    btn.disabled = false; btn.textContent = '제출하기';
+  }
+});
+
+loadNames();
+</script>
+</body>
+</html>
