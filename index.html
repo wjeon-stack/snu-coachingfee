@@ -101,6 +101,7 @@
   .consent ol{margin:6px 0 0;padding-left:18px;} .consent li{margin-bottom:6px;}
   .consent-row{margin-top:12px;}
 
+  .note{font-size:12.5px;color:var(--slate);margin:12px 0 0;word-break:keep-all;}
   .submit-wrap{margin-top:30px;padding-top:6px;}
   .submit-btn{width:100%;background:var(--blue);color:#fff;border:none;border-radius:14px;padding:16px;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 8px 20px rgba(12,138,116,.32);transition:background .15s,transform .1s;}
   .submit-btn:hover{background:#0A6F5D;}
@@ -139,11 +140,33 @@
     </div>
 
     <form id="form" novalidate>
-      <div class="section-title"><span class="section-badge">1</span><h2>기본 정보</h2></div>
+      <div class="section-title"><span class="section-badge">1</span><h2>이름 선택</h2></div>
       <div class="card">
         <div class="q-label">이름<span class="req">*</span></div>
         <select id="name"><option value="">불러오는 중…</option></select>
       </div>
+
+      <div id="payBox" style="display:none">
+      <div class="section-title alt"><span class="section-badge">2</span><h2>코칭비 수령방식</h2></div>
+      <div class="card">
+        <div class="q-label">수령방식<span class="req">*</span></div>
+        <div class="stack" style="margin-top:8px">
+          <label class="radio-item"><input type="radio" name="pay" value="전액 기부"><span class="check-icon"></span><div><b>전액 기부</b><small>코칭비 전액을 기부합니다.</small></div></label>
+          <label class="radio-item"><input type="radio" name="pay" value="전액 개인 수령"><span class="check-icon"></span><div><b>전액 개인 수령</b><small>코칭비 전액을 개인 계좌로 수령합니다.</small></div></label>
+        </div>
+        <div id="donateBox">
+          <div class="q-label">기부 방식<span class="req">*</span></div>
+          <div class="stack" style="margin-top:8px">
+            <label class="radio-item"><input type="radio" name="donate" value="클립스컨설팅을 통한 익명 기부 (세이브더칠드런)"><span class="check-icon"></span><div><b>클립스컨설팅을 통한 익명 기부</b><small>세이브더칠드런으로 기부됩니다.</small></div></label>
+            <label class="radio-item"><input type="radio" name="donate" value="코칭비 수령 후 개인적으로 기부"><span class="check-icon"></span><div><b>코칭비 수령 후 개인적으로 기부</b><small>코칭비를 수령하신 뒤 직접 기부합니다.</small></div></label>
+          </div>
+        </div>
+        <p class="note">※ 코칭비 개인 수령 시, 원천징수 3.3%를 제한 금액이 정산될 예정입니다.</p>
+      </div>
+      </div><!-- /payBox -->
+
+      <div id="infoBox" style="display:none">
+      <div class="section-title"><span class="section-badge">3</span><h2>기본 정보</h2></div>
       <div class="card">
         <div class="q-label">연락처<span class="req">*</span></div>
         <p class="q-desc">성함을 선택하시면 연락처 정보가 자동으로 동기화됩니다. 수정이 필요한 경우, 직접 수정해주세요.</p>
@@ -160,25 +183,10 @@
           <input type="text" id="addressDetail" placeholder="상세 주소 (동·호수 등)" autocomplete="off">
         </div>
       </div>
-
-      <div class="section-title alt"><span class="section-badge">2</span><h2>코칭비 수령방식</h2></div>
-      <div class="card">
-        <div class="q-label">수령방식<span class="req">*</span></div>
-        <div class="stack" style="margin-top:8px">
-          <label class="radio-item"><input type="radio" name="pay" value="전액 기부"><span class="check-icon"></span><div><b>전액 기부</b><small>코칭비 전액을 기부합니다.</small></div></label>
-          <label class="radio-item"><input type="radio" name="pay" value="전액 개인 수령"><span class="check-icon"></span><div><b>전액 개인 수령</b><small>코칭비 전액을 개인 계좌로 수령합니다.</small></div></label>
-        </div>
-        <div id="donateBox">
-          <div class="q-label">기부 방식<span class="req">*</span></div>
-          <div class="stack" style="margin-top:8px">
-            <label class="radio-item"><input type="radio" name="donate" value="클립스컨설팅을 통한 익명 기부 (세이브더칠드런)"><span class="check-icon"></span><div><b>클립스컨설팅을 통한 익명 기부</b><small>세이브더칠드런으로 기부됩니다.</small></div></label>
-            <label class="radio-item"><input type="radio" name="donate" value="코칭비 수령 후 개인적으로 기부"><span class="check-icon"></span><div><b>코칭비 수령 후 개인적으로 기부</b><small>코칭비를 수령하신 뒤 직접 기부합니다.</small></div></label>
-          </div>
-        </div>
-      </div>
+      </div><!-- /infoBox -->
 
       <div id="docsBox" style="display:none">
-      <div class="section-title"><span class="section-badge">3</span><h2>서류 제출</h2></div>
+      <div class="section-title"><span class="section-badge">4</span><h2>서류 제출</h2></div>
       <div class="card">
         <div class="q-label">통장사본<span class="req">*</span></div>
         <p class="q-desc">JPG, PNG, PDF · 6MB 이하 (사진은 자동으로 용량이 줄어듭니다)</p>
@@ -189,8 +197,9 @@
         <p class="q-desc">JPG, PNG, PDF · 6MB 이하</p>
         <div class="file"><input type="file" id="idcard" accept="image/jpeg,image/png,application/pdf"><div class="fn" id="fn2"></div></div>
       </div>
+      <p class="note" style="margin:-2px 4px 12px">※ 소득 신고를 위한 필수 제출 서류입니다.</p>
 
-      <div class="section-title alt"><span class="section-badge">4</span><h2>개인정보 수집 및 이용 동의</h2></div>
+      <div class="section-title alt"><span class="section-badge">5</span><h2>개인정보 수집 및 이용 동의</h2></div>
       <div class="card">
         <div class="consent">
           <b>개인정보 수집·이용 동의서</b>
@@ -203,7 +212,6 @@
         </div>
         <label class="radio-item consent-row"><input type="checkbox" id="consent"><span class="check-icon"></span><b>개인정보 수집 및 이용에 동의합니다. (필수)</b></label>
       </div>
-
       </div><!-- /docsBox -->
 
       <div class="submit-wrap">
@@ -246,6 +254,7 @@ async function loadNames(){
 $('name').addEventListener('change', async () => {
   const n = $('name').value;
   $('phone').value = ''; $('email').value = '';
+  refresh();
   if(!n) return;
   $('phone').placeholder = '불러오는 중…';
   try{
@@ -258,17 +267,21 @@ $('name').addEventListener('change', async () => {
 
 const PERSONAL_DONATE = '코칭비 수령 후 개인적으로 기부';
 
-// 서류·동의는 '전액 개인 수령' 또는 '수령 후 개인적으로 기부'일 때만 필요
-function needDocs(){
+// 연락처·주소 입력: 이름과 수령방식이 정해졌고 '클립스컨설팅 익명 기부'가 아닐 때
+function needInfo(){
   const pay = document.querySelector('input[name=pay]:checked');
   const donate = document.querySelector('input[name=donate]:checked');
-  if(!pay) return false;
+  if(!$('name').value || !pay) return false;
   if(pay.value === '전액 개인 수령') return true;
   return !!donate && donate.value === PERSONAL_DONATE;
 }
+// 서류·동의: 연락처·주소 입력 대상과 동일 ('전액 개인 수령' 또는 '수령 후 개인적으로 기부')
+function needDocs(){ return needInfo(); }
 function refresh(){
   const pay = document.querySelector('input[name=pay]:checked');
+  $('payBox').style.display = $('name').value ? 'block' : 'none';
   $('donateBox').style.display = (pay && pay.value === '전액 기부') ? 'block' : 'none';
+  $('infoBox').style.display = needInfo() ? 'block' : 'none';
   $('docsBox').style.display = needDocs() ? 'block' : 'none';
 }
 document.querySelectorAll('input[name=pay],input[name=donate]').forEach(r => r.addEventListener('change', refresh));
@@ -324,13 +337,13 @@ $('form').addEventListener('submit', async ev => {
   const pay = document.querySelector('input[name=pay]:checked');
   const donate = document.querySelector('input[name=donate]:checked');
   if(!v('name')) return fail('이름을 선택해 주세요.');
-  if(!v('phone')) return fail('연락처를 입력해 주세요.');
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v('email'))) return fail('이메일을 올바르게 입력해 주세요.');
-  if(!v('address')) return fail('주소지를 입력해 주세요.');
   if(!pay) return fail('수령방식을 선택해 주세요.');
   if(pay.value === '전액 기부' && !donate) return fail('기부 방식을 선택해 주세요.');
   const docs = needDocs();
   if(docs){
+    if(!v('phone')) return fail('연락처를 입력해 주세요.');
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v('email'))) return fail('이메일을 올바르게 입력해 주세요.');
+    if(!v('address')) return fail('주소지를 입력해 주세요.');
     if(!$('bankbook').files[0]) return fail('통장사본을 첨부해 주세요.');
     if(!$('idcard').files[0]) return fail('신분증 사본을 첨부해 주세요.');
     if(!$('consent').checked) return fail('개인정보 수집 및 이용에 동의해 주세요.');
@@ -339,11 +352,13 @@ $('form').addEventListener('submit', async ev => {
   const btn = $('btn'); btn.disabled = true; btn.textContent = '제출 중…';
   try{
     const payload = {
-      name:v('name'), phone:v('phone'), email:v('email'), address:v('address'), addressDetail:v('addressDetail'),
+      name:v('name'),
       payMethod:pay.value, donateType: pay.value === '전액 기부' ? donate.value : '',
       consent: docs
     };
     if(docs){
+      payload.phone = v('phone'); payload.email = v('email');
+      payload.address = v('address'); payload.addressDetail = v('addressDetail');
       payload.bankbook = await fileToPayload($('bankbook').files[0], '통장사본');
       payload.idcard = await fileToPayload($('idcard').files[0], '신분증 사본');
     }
