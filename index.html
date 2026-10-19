@@ -147,21 +147,21 @@
       </div>
 
       <div id="payBox" style="display:none">
-      <div class="section-title alt"><span class="section-badge">2</span><h2>코칭비 수령방식</h2></div>
+      <div class="section-title alt"><span class="section-badge">2</span><h2>코칭비 정산방식</h2></div>
       <div class="card">
-        <div class="q-label">수령방식<span class="req">*</span></div>
+        <div class="q-label">정산방식<span class="req">*</span></div>
         <div class="stack" style="margin-top:8px">
           <label class="radio-item"><input type="radio" name="pay" value="전액 기부"><span class="check-icon"></span><div><b>1안) 기부</b><small>코칭비 전액을 기부합니다.</small></div></label>
-          <label class="radio-item"><input type="radio" name="pay" value="전액 개인 수령"><span class="check-icon"></span><div><b>2안) 개인 취득</b><small>코칭비 전액을 개인 계좌로 수령합니다.</small></div></label>
+          <label class="radio-item"><input type="radio" name="pay" value="전액 개인 수령"><span class="check-icon"></span><div><b>2안) 개인 취득</b><small>코칭비 전액을 개인 계좌로 지급 받습니다.</small></div></label>
         </div>
         <div id="donateBox">
           <div class="q-label">기부 방식<span class="req">*</span></div>
           <div class="stack" style="margin-top:8px">
             <label class="radio-item"><input type="radio" name="donate" value="클립스컨설팅을 통한 익명 기부 (세이브더칠드런)"><span class="check-icon"></span><div><b>1-1) 클립스컨설팅을 통한 익명 기부</b><small>세이브더칠드런으로 기부됩니다. ※기부금 영수증 발행 불가</small></div></label>
-            <label class="radio-item"><input type="radio" name="donate" value="코칭비 수령 후 개인적으로 기부"><span class="check-icon"></span><div><b>1-2) 코칭비 수령 후 개인적으로 기부</b><small>코칭비를 수령하신 뒤 직접 기부합니다.</small></div></label>
+            <label class="radio-item"><input type="radio" name="donate" value="코칭비 수령 후 개인적으로 기부"><span class="check-icon"></span><div><b>1-2) 코칭비 정산 후 개인적으로 기부</b><small>코칭비를 지급 받으신 뒤 직접 기부합니다.</small></div></label>
           </div>
         </div>
-        <p class="note" id="taxNote" style="display:none">※ 코칭비 개인 수령 시, 원천징수 3.3%를 제한 금액이 정산될 예정입니다.</p>
+        <p class="note" id="taxNote" style="display:none">※ 코칭비 개인 취득 시, 원천징수 3.3%를 제한 금액이 정산될 예정입니다.</p>
       </div>
       </div><!-- /payBox -->
 
@@ -169,7 +169,7 @@
       <div class="section-title"><span class="section-badge">3</span><h2>기본 정보</h2></div>
       <div class="card">
         <div class="q-label">연락처<span class="req">*</span></div>
-        <p class="q-desc">성함을 선택하시면 연락처 정보가 자동으로 동기화됩니다. 수정이 필요한 경우, 직접 수정해주세요.</p>
+        <p class="q-desc">연락처 정보가 자동으로 동기화됩니다. 수정이 필요한 경우, 직접 수정해주세요.</p>
         <input type="tel" id="phone" placeholder="010-0000-0000" autocomplete="off">
       </div>
       <div class="card">
@@ -338,7 +338,7 @@ $('form').addEventListener('submit', async ev => {
   const pay = document.querySelector('input[name=pay]:checked');
   const donate = document.querySelector('input[name=donate]:checked');
   if(!v('name')) return fail('이름을 선택해 주세요.');
-  if(!pay) return fail('수령방식을 선택해 주세요.');
+  if(!pay) return fail('정산방식을 선택해 주세요.');
   if(pay.value === '전액 기부' && !donate) return fail('기부 방식을 선택해 주세요.');
   const docs = needDocs();
   if(docs){
